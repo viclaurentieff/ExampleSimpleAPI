@@ -7,7 +7,7 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.0
+  version: 1.0.1
 servers:
 - url: https://virtserver.swaggerhub.com/vic_laurentieff/ExampleSimpleAPI/1.0.0
   description: SwaggerHub API Auto Mocking
@@ -16,7 +16,26 @@ tags:
   description: Secured Admin-only calls
 - name: developers
   description: Operations available to regular developers
+- name: customers
+  description: Customers refer to the objects who involved in a business transaction.
 paths:
+  /customers:
+    get:
+      tags:
+      - customers
+      summary: returns customers for ___
+      description: |
+        The service returns the customers that are associated with the Client ID
+      operationId: getCustomers
+      responses:
+        "200":
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customers'
   /inventory:
     get:
       tags:
@@ -56,6 +75,7 @@ paths:
           minimum: 0
           type: integer
           format: int32
+          example: 13
       responses:
         "200":
           description: search results matching criteria
@@ -124,3 +144,64 @@ components:
         phone:
           type: string
           example: 408-867-5309
+    Customers:
+      properties:
+        name:
+          type: string
+          example: Jane Doe
+        notification:
+          $ref: '#/components/schemas/NotificationHandle'
+    NotificationHandle:
+      required:
+      - type
+      properties:
+        type:
+          $ref: '#/components/schemas/NotificationHandleType'
+        email:
+          type: string
+      description: Email or SMS notification preferences
+      discriminator:
+        propertyName: type
+        mapping:
+          EMAIL: '#/components/schemas/EmailNotificationHandle'
+          SMS: '#/components/schemas/SMSNotificationHandle'
+    NotificationHandleType:
+      type: string
+      description: Email or SMS
+      example: EMAIL
+      enum:
+      - EMAIL
+      - SMS
+    EmailNotificationHandle:
+      allOf:
+      - $ref: '#/components/schemas/NotificationHandle'
+      - required:
+        - email
+        type: object
+        properties:
+          email:
+            maxLength: 64
+            type: string
+            description: The email of the contact
+            format: email
+            example: janedoe@gmail.com
+        description: Notification via Email
+    SMSNotificationHandle:
+      allOf:
+      - $ref: '#/components/schemas/NotificationHandle'
+      - required:
+        - phone_number
+        type: object
+        properties:
+          phone_number:
+            $ref: '#/components/schemas/PhoneNumber'
+        description: Notification via SMS
+    PhoneNumber:
+      maxLength: 30
+      type: string
+      description: idenitifies a specific phone or fax numnber as defined by telco
+        Starts with "+" followed by the country code (1 to 3 digits), then a "-" and
+        finally, a combination of digits, "(", ")", "+", "-" up to 30 characters
+      format: \+[0-9]{1,3}-[0-9()+\\-]{1,30}
+      example: +1-416-555-5555
+      x-code-notNull: 309
