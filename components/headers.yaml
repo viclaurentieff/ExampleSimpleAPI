@@ -1,0 +1,48 @@
+components:
+  headers:
+    x-et-page-next-offset:
+      description: >
+        Pagination parameter - the offset of the 1st record in the next requested
+        record set against the total records in backend
+      schema:
+        type: integer
+    x-et-page-size-limit:
+      description: Pagination parameter - the number of record on each returned page
+      schema:
+        type: integer
+    x-et-page-total-records:
+      description: Pagination parameter - the total number of record in the backend
+        system
+      schema:
+        type: integer
+    x-et-rate-limit-ceiling:
+      description: >
+        The rate limit ceiling for that given endpoint in the given window.
+      schema:
+        type: integer
+        format: int64
+    x-et-rate-limit-remaining:
+      description: >
+        The number of requests left for the current window. We calculate the rate limit
+        based on GMT in HOUR window, the timezones that
+        have 30-minute shift should realize the remaining count is based on the clock
+        in the hourly-shift zones.
+      schema:
+        type: integer
+        format: int64
+    x-et-rate-limit-window:
+      description: >
+        The rate limit gauging and resetting window. To simplify the complexity of
+        the impact of timezone on the rate limiting, we will use GMT for rate
+        limiting window. MINUTE is the default setting unless specified otherwise.
+      schema:
+        type: string
+        enum: ['HOUR', 'MINUTE']
+        example: HOUR
+    x-et-response-code:
+      description: >
+        A numeric response code specifying the outcome of the message. A successful
+        call will
+        return a response code of 0, along with any additional response data.
+      schema:
+        type: integer
