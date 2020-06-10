@@ -1,18 +1,5 @@
-components:
-  responses:
-    400-bad-request:
-      description: Bad Request - Validation Errors
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorModel"
-      headers:
-        x-et-rate-limit-window:
-          $ref: "#/components/headers/x-et-rate-limit-window"
-        x-et-rate-limit-ceiling:
-          $ref: "#/components/headers/x-et-rate-limit-ceiling"
-        x-et-rate-limit-remaining:
-          $ref: "#/components/headers/x-et-rate-limit-remaining"
+400-bad-request:
+  description: Bad Request - Validation Errors
     401-unauthorized:
       description: Unauthorized
     403-forbidden:
