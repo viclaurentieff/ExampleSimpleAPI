@@ -17,6 +17,7 @@ components:
           maxLength: 2000
           example: Unknown error
 
+    
     NotificationType:
       type: string
       description: Email <br/> SMS <br/>
@@ -71,3 +72,54 @@ components:
       maxLength: 30
       format: '\+[0-9]{1,3}-[0-9()+\-]{1,30}'
       example: +1-416-555-1212
+
+
+    NotificationHandleType:
+      type: string
+      description: Email or SMS
+      enum: ['EMAIL', 'SMS']
+      example: EMAIL
+      
+    NotificationHandle:
+      description: Email or SMS notification preferences
+      discriminator:
+        propertyName: type
+        mapping:
+          EMAIL: '..components/schemas/components/schemas/EmailNotificationHandle'
+          SMS: '..components/schemas/components/schemas/SMSNotificationHandle'
+      required:
+      - type
+      properties:
+        type:
+          $ref: '..components/schemas/components/schemas/NotificationHandleType'
+        email:
+          type: string   
+          
+    EmailNotificationHandle:
+      allOf:
+        - $ref: '..components/schemas/components/schemas/NotificationHandle'
+        - type: object
+          description: Notification via Email
+          required:
+          - email
+          properties:
+            email:
+              type: string
+              maxLength: 64
+              format: email
+              description: The email of the contact
+              example: janedoe@gmail.com
+              
+              
+   CustomerCreationDate:
+      type: object
+      properties:
+        customer_creation_date:
+          $ref: "#/components/schemas/CustomDateTime"
+    
+    CustomDateTime:
+      description: |
+        A particular point in the progression of time defined and expressed in either UTC time format (YYYY-MM-DDThh:mm:ss.sssZ).
+      type: string
+      format: date-time #YYYY-MM-DDThh:mm:ss.sssZ
+      example: 2019-05-29T17:19:26.951000Z
