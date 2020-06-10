@@ -1,0 +1,57 @@
+components:
+  responses:
+    400-bad-request:
+      description: Bad Request - Validation Errors
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorModel"
+      headers:
+        x-et-rate-limit-window:
+          $ref: "#/components/headers/x-et-rate-limit-window"
+        x-et-rate-limit-ceiling:
+          $ref: "#/components/headers/x-et-rate-limit-ceiling"
+        x-et-rate-limit-remaining:
+          $ref: "#/components/headers/x-et-rate-limit-remaining"
+    401-unauthorized:
+      description: Unauthorized
+    403-forbidden:
+      description: Forbidden
+    404-not-found:
+      description: Resources Not Found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorModel"
+      headers:
+        x-et-rate-limit-window:
+          $ref: "#/components/headers/x-et-rate-limit-window"
+        x-et-rate-limit-ceiling:
+          $ref: "#/components/headers/x-et-rate-limit-ceiling"
+        x-et-rate-limit-remaining:
+          $ref: "#/components/headers/x-et-rate-limit-remaining"
+    429-too-many-requests:
+      description: Too many requests; blocked due to rate limiting.
+      headers:
+        x-et-rate-limit-window:
+          $ref: "#/components/headers/x-et-rate-limit-window"
+        x-et-rate-limit-ceiling:
+          $ref: "#/components/headers/x-et-rate-limit-ceiling"
+        x-et-rate-limit-remaining:
+          $ref: "#/components/headers/x-et-rate-limit-remaining"
+    500-internal-server-error:
+      description: Internal Server Error
+    503-service-unavailable:
+      description: Service Unavailable - The server cannot handle the request for
+        a service due to temporary maintenance.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorModel"
+      headers:
+        x-et-rate-limit-window:
+          $ref: "#/components/headers/x-et-rate-limit-window"
+        x-et-rate-limit-ceiling:
+          $ref: "#/components/headers/x-et-rate-limit-ceiling"
+        x-et-rate-limit-remaining:
+          $ref: "#/components/headers/x-et-rate-limit-remaining"
